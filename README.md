@@ -158,7 +158,10 @@ Action labels generate high dimensional sparse features.
 
 # Design Documents
 
-## HLD (High-Level Design)
+## [HLD (High Level Design)](./docs/HLD.md)
+
+![System High-Level Design](./docs/assets/HLD.png)
+
 
 Contains:
 
