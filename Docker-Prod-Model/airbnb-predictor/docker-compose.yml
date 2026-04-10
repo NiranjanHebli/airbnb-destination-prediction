@@ -1,0 +1,64 @@
+version: "3.9"
+
+services:
+
+  # ── Python FastAPI ML Service ──────────────────────────────────
+  ml-service:
+    build: ./ml-service
+    container_name: airbnb_ml
+    ports:
+      - "8000:8000"
+    environment:
+      MODEL_PATH: production_model.pkl
+      PREPROCESSOR_PATH: preprocessor.pkl
+      ENCODER_PATH: label_encoder.pkl
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+  # ── MongoDB ────────────────────────────────────────────────────
+  mongo:
+    image: mongo:7.0
+    container_name: airbnb_mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    restart: unless-stopped
+
+  # ── Node.js Express Backend ────────────────────────────────────
+  backend:
+    build: ./backend
+    container_name: airbnb_backend
+    ports:
+      - "4000:4000"
+    environment:
+      PORT: 4000
+      MONGO_URI: mongodb://mongo:27017/airbnb_predictor
+      ML_SERVICE_URL: http://ml-service:8000
+      FRONTEND_URL: http://localhost:3000
+    depends_on:
+      mongo:
+        condition: service_started
+      ml-service:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # ── React Frontend ─────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        REACT_APP_BACKEND_URL: http://localhost:4000
+    container_name: airbnb_frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  mongo_data:
