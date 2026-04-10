@@ -23,6 +23,8 @@ import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import StandardScaler, OneHotEncoder, LabelEncoder
 from sklearn.model_selection import train_test_split
+from imblearn.over_sampling import SMOTE
+from imblearn.pipeline import Pipeline as ImbPipeline
 import xgboost as xgb
 import sklearn
 
@@ -124,7 +126,7 @@ print("\n🚀  Fitting preprocessor…")
 X_train_t = preprocessor.fit_transform(X_train)
 X_val_t   = preprocessor.transform(X_val)
 
-print("🚀  Training XGBoost…")
+print("🚀  Training XGBoost with SMOTE…")
 model = xgb.XGBClassifier(
     n_estimators=300,
     max_depth=6,
@@ -136,10 +138,14 @@ model = xgb.XGBClassifier(
     random_state=42,
     n_jobs=-1,
 )
-model.fit(
+imb_pipeline = ImbPipeline([
+    ('smote', SMOTE(random_state=42)),
+    ('classifier', model)
+])
+imb_pipeline.fit(
     X_train_t, y_train,
-    eval_set=[(X_val_t, y_val)],
-    verbose=50,
+    classifier__eval_set=[(X_val_t, y_val)],
+    classifier__verbose=50,
 )
 
 # ── Quick NDCG@5 on val ───────────────────────────────────────────────────────
@@ -152,7 +158,7 @@ def ndcg5(y_true, proba):
             score += 1.0 / np.log2(rank + 2)
     return score / len(y_true)
 
-proba_val = model.predict_proba(X_val_t)
+proba_val = imb_pipeline.predict_proba(X_val_t)
 score = ndcg5(y_val, proba_val)
 print(f"\n📊  Validation NDCG@5 : {score:.4f}")
 
@@ -160,7 +166,7 @@ print(f"\n📊  Validation NDCG@5 : {score:.4f}")
 print("\n💾  Saving pkl files…")
 
 with open("production_model.pkl", "wb") as f:
-    pickle.dump(model, f)
+    pickle.dump(imb_pipeline, f)
 
 with open("preprocessor.pkl", "wb") as f:
     pickle.dump(preprocessor, f)

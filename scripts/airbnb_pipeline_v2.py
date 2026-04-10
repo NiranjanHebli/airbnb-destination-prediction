@@ -78,10 +78,10 @@ log = logging.getLogger("airbnb_pipeline")
 # ══════════════════════════════════════════════════════════════════════════════
 # CONFIGURATION
 # ══════════════════════════════════════════════════════════════════════════════
-TRAIN_USERS_PATH      = "train_users_2.csv"
-SESSIONS_PATH         = "sessions.csv"
-OUTPUT_PATH           = "final_processed_data.csv"
-ARTIFACTS_PATH        = "pipeline_artifacts.pkl"   # [U-15] single artifact bundle
+TRAIN_USERS_PATH      = "../data/raw/train_users_2.csv"
+SESSIONS_PATH         = "../data/raw/sessions.csv"
+OUTPUT_PATH           = "../data/processed/final_processed_data.csv"
+ARTIFACTS_PATH        = "../models/pipeline_artifacts.pkl"   # [U-15] single artifact bundle
 
 SESSION_TIMESTAMP_COL = "timestamp"   # set None if absent in your data
 
