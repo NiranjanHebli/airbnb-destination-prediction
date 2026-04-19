@@ -1,18 +1,3 @@
-"""
-regenerate_pkl.py
-=================
-Regenerates fresh, sklearn-1.6.1-compatible pkl files for the ml-service.
-
-Reads the real training data from the research directory, engineers the same
-6 features the API accepts, trains a compact XGBoost model, and saves:
-  - production_model.pkl  (raw XGBoost model — loaded via separate preprocessor)
-  - preprocessor.pkl      (ColumnTransformer for the 6 API features)
-  - label_encoder.pkl     (LabelEncoder for country codes)
-
-Run from inside ml-service/ (so files land in the right place):
-    python regenerate_pkl.py
-"""
-
 import os
 import sys
 import pickle
@@ -44,7 +29,7 @@ SESSIONS_CSV = os.path.join(RESEARCH_DIR, "sessions.csv")
 
 for p in [TRAIN_CSV, SESSIONS_CSV]:
     if not os.path.exists(p):
-        sys.exit(f"❌  File not found: {p}\nMake sure the research directory is at {RESEARCH_DIR}")
+        sys.exit(f"  File not found: {p}\nMake sure the research directory is at {RESEARCH_DIR}")
 
 # ── Load data ──────────────────────────────────────────────────────────────────
 print("\n📥  Loading training data…")
@@ -160,10 +145,10 @@ def ndcg5(y_true, proba):
 
 proba_val = imb_pipeline.predict_proba(X_val_t)
 score = ndcg5(y_val, proba_val)
-print(f"\n📊  Validation NDCG@5 : {score:.4f}")
+print(f"\n  Validation NDCG@5 : {score:.4f}")
 
 # ── Save pkl files ────────────────────────────────────────────────────────────
-print("\n💾  Saving pkl files…")
+print("\n  Saving pkl files…")
 
 with open("production_model.pkl", "wb") as f:
     pickle.dump(imb_pipeline, f)
@@ -174,7 +159,7 @@ with open("preprocessor.pkl", "wb") as f:
 with open("label_encoder.pkl", "wb") as f:
     pickle.dump(le, f)
 
-print("✅  Done!")
+print("Done!")
 print("   production_model.pkl —", os.path.getsize("production_model.pkl") // 1024, "KB")
 print("   preprocessor.pkl     —", os.path.getsize("preprocessor.pkl") // 1024, "KB")
 print("   label_encoder.pkl    —", os.path.getsize("label_encoder.pkl") // 1024, "KB")
