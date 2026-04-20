@@ -67,6 +67,83 @@ The system must:
 
 ---
 
+
+# Steps to Run :- 
+
+### Running with Docker Compose (Recommended)
+
+#### Build and start all services
+
+```bash
+cd Docker-Prod-Model/airbnb-predictor
+docker-compose up --build
+```
+#### Stop
+
+```bash
+docker-compose down
+```
+#### Stop and remove volumes
+```bash
+docker-compose down -v
+```
+
+| Service | URL |
+|---------|-----|
+| Frontend | http://localhost:3000 |
+| Backend  | http://localhost:4000 |
+| ML API   | http://localhost:8000 |
+| MongoDB  | mongodb://localhost:27017 |
+
+---
+
+##  Running Locally (Without Docker)
+
+### Prerequisites
+- Python 3.11+
+- Node.js 18+
+- MongoDB running locally on port 27017
+
+### 1. ML Service
+
+```bash
+cd Docker-Prod-Model/airbnb-predictor
+cd ml-service
+pip install -r requirements.txt
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+```
+
+Verify: http://localhost:8000/health
+
+Docs:   http://localhost:8000/docs
+
+### 2. Backend
+
+```bash
+cd ..
+cd backend
+cp .env.example .env        # edit if needed
+npm install
+npm run dev                 # or: npm start
+```
+
+Service runs at:-  http://localhost:4000
+
+### 3. Frontend
+
+```bash
+cd ..
+cd frontend
+cp .env.example .env        # set REACT_APP_BACKEND_URL if needed
+npm install
+npm start
+```
+
+App runs at http://localhost:3000
+(CRA proxy forwards /api/* to backend automatically in dev)
+
+---
+
 # Workflow
 
 ## Sprint 1: Discovery & Baseline
@@ -170,8 +247,7 @@ Contains:
 - prediction pipeline
 - assumptions
 
-## LLD (Low-Level Design)
-
+## [LLD (Low Level Design)](./docs/LLD.md)
 Contains:
 
 - feature inventory
