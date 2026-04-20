@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Footprint — User Journey Intelligence | Business Presentation</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0A1628;
+    --navy-mid: #12253F;
+    --navy-light: #1C3459;
+    --gold: #C8972A;
+    --gold-light: #E4B84A;
+    --gold-pale: #F7EDD0;
+    --white: #FFFFFF;
+    --off-white: #F5F3EE;
+    --text-muted: #8C8C8C;
+    --border: #E0DDD6;
+    --success: #1A6B45;
+    --danger: #8B1C1C;
+    --info: #1A4A7A;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--off-white); color: var(--navy); font-size: 15px; line-height: 1.7; }
+
+  /* NAV */
+  nav { position: sticky; top: 0; z-index: 100; background: var(--navy); border-bottom: 1px solid rgba(200,151,42,0.3); }
+  .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; gap: 0; }
+  .nav-logo { font-family: 'Playfair Display', serif; color: var(--gold-light); font-size: 14px; font-weight: 700; letter-spacing: 0.08em; padding: 0 1.5rem 0 0; border-right: 1px solid rgba(255,255,255,0.1); white-space: nowrap; }
+  .nav-links { display: flex; align-items: center; overflow-x: auto; scrollbar-width: none; }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-links a { color: rgba(255,255,255,0.65); text-decoration: none; font-size: 12.5px; font-weight: 500; padding: 14px 18px; white-space: nowrap; border-bottom: 2px solid transparent; transition: all 0.2s; letter-spacing: 0.03em; text-transform: uppercase; }
+  .nav-links a:hover { color: var(--gold-light); border-bottom-color: var(--gold); }
+  .nav-badge { margin-left: auto; padding-left: 1.5rem; border-left: 1px solid rgba(255,255,255,0.1); }
+  .badge-pill { background: var(--gold); color: var(--navy); font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px; letter-spacing: 0.04em; white-space: nowrap; }
+
+  /* HERO */
+  .hero { background: var(--navy); background-image: radial-gradient(ellipse at 70% 50%, rgba(200,151,42,0.12) 0%, transparent 60%), radial-gradient(ellipse at 10% 80%, rgba(26,74,122,0.4) 0%, transparent 50%); padding: 80px 2rem 70px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background-image: repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.02) 40px), repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.02) 40px); pointer-events: none; }
+  .hero-inner { max-width: 1200px; margin: 0 auto; position: relative; }
+  .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(200,151,42,0.15); border: 1px solid rgba(200,151,42,0.35); color: var(--gold-light); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; padding: 6px 14px; border-radius: 4px; margin-bottom: 24px; }
+  .hero-tag span { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; display: inline-block; animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3.8rem); font-weight: 700; color: var(--white); line-height: 1.1; margin-bottom: 12px; }
+  .hero h1 span { color: var(--gold-light); }
+  .hero-subtitle { font-size: 17px; color: rgba(255,255,255,0.6); font-weight: 300; max-width: 600px; margin-bottom: 40px; }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 32px; }
+  .hero-meta-item { }
+  .hero-meta-item .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.4); margin-bottom: 4px; }
+  .hero-meta-item .value { font-size: 14px; color: rgba(255,255,255,0.85); font-weight: 500; }
+  .hero-stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden; margin-top: 48px; }
+  .hero-stat { background: rgba(10,22,40,0.6); padding: 24px 20px; }
+  .hero-stat .num { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: var(--gold-light); line-height: 1; margin-bottom: 6px; }
+  .hero-stat .desc { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.4; }
+
+  /* SECTIONS */
+  section { padding: 70px 2rem; }
+  section:nth-child(even) { background: var(--white); }
+  .section-inner { max-width: 1200px; margin: 0 auto; }
+  .section-header { margin-bottom: 48px; }
+  .section-tag { display: inline-block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--gold); border-bottom: 2px solid var(--gold); padding-bottom: 3px; margin-bottom: 14px; }
+  .section-header h2 { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: var(--navy); line-height: 1.2; }
+  .section-header p { font-size: 16px; color: #555; max-width: 680px; margin-top: 12px; }
+
+  /* METRIC GRID */
+  .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 48px; }
+  .metric-card { background: var(--navy); border-radius: 12px; padding: 24px 20px; position: relative; overflow: hidden; }
+  .metric-card::after { content: ''; position: absolute; bottom: -10px; right: -10px; width: 60px; height: 60px; background: rgba(200,151,42,0.08); border-radius: 50%; }
+  .metric-card .m-label { font-size: 11px; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .metric-card .m-value { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--gold-light); line-height: 1; margin-bottom: 6px; }
+  .metric-card .m-sub { font-size: 12px; color: rgba(255,255,255,0.5); }
+  .metric-card.light { background: var(--gold-pale); }
+  .metric-card.light .m-label { color: rgba(10,22,40,0.5); }
+  .metric-card.light .m-value { color: var(--navy); }
+  .metric-card.light .m-sub { color: rgba(10,22,40,0.55); }
+
+  /* CARDS */
+  .card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 28px; }
+  .card-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .card-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  @media(max-width: 768px) { .card-grid-2, .card-grid-3 { grid-template-columns: 1fr; } .hero-stat-grid { grid-template-columns: 1fr 1fr; } }
+  .card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; color: var(--navy); margin-bottom: 10px; }
+  .card p { font-size: 14px; color: #555; line-height: 1.7; }
+  .card-accent { border-left: 3px solid var(--gold); }
+
+  /* TABLE */
+  .data-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .data-table thead tr { background: var(--navy); color: var(--white); }
+  .data-table thead th { padding: 12px 16px; text-align: left; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; }
+  .data-table tbody tr { border-bottom: 1px solid var(--border); }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table tbody tr:hover { background: rgba(10,22,40,0.03); }
+  .data-table td { padding: 12px 16px; color: #444; vertical-align: top; }
+  .data-table td:first-child { font-weight: 500; color: var(--navy); }
+  .pill { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+  .pill-high { background: #FEF3C7; color: #92400E; }
+  .pill-med { background: #DBEAFE; color: #1E40AF; }
+  .pill-low { background: #D1FAE5; color: #065F46; }
+  .pill-crit { background: #FEE2E2; color: #991B1B; }
+
+  /* CHALLENGE CARDS */
+  .challenge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .challenge-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 24px; position: relative; overflow: hidden; }
+  .challenge-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+  .challenge-card.red::before { background: linear-gradient(90deg, #E53E3E, #FC8181); }
+  .challenge-card.amber::before { background: linear-gradient(90deg, #D69E2E, #F6E05E); }
+  .challenge-card.blue::before { background: linear-gradient(90deg, #2B6CB0, #63B3ED); }
+  .challenge-card.teal::before { background: linear-gradient(90deg, #2C7A7B, #81E6D9); }
+  .challenge-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-muted); margin-bottom: 12px; }
+  .challenge-card h3 { font-size: 15px; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
+  .challenge-card p { font-size: 13.5px; color: #555; line-height: 1.65; margin-bottom: 12px; }
+  .challenge-impact { font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  .impact-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  /* TIMELINE */
+  .timeline { position: relative; padding-left: 40px; }
+  .timeline::before { content: ''; position: absolute; left: 12px; top: 0; bottom: 0; width: 1px; background: var(--border); }
+  .timeline-item { position: relative; margin-bottom: 32px; }
+  .timeline-dot { position: absolute; left: -34px; width: 24px; height: 24px; background: var(--navy); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .timeline-dot span { width: 8px; height: 8px; background: var(--gold); border-radius: 50%; }
+  .timeline-item h4 { font-size: 15px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+  .timeline-item p { font-size: 13.5px; color: #555; }
+  .timeline-sprint { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
+
+  /* LIST STYLED */
+  .check-list { list-style: none; }
+  .check-list li { padding: 8px 0; font-size: 14px; color: #444; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: 10px; }
+  .check-list li:last-child { border-bottom: none; }
+  .check-list li::before { content: ''; display: inline-block; width: 16px; height: 16px; background: var(--navy); border-radius: 50%; flex-shrink: 0; margin-top: 2px; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3.5 8.5l3 3 6-6' stroke='%23C8972A' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+
+  /* DIAGRAM CONTAINER */
+  .diagram-wrap { background: var(--white); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+  .diagram-label { padding: 14px 20px; background: var(--navy); font-family: 'DM Mono', monospace; font-size: 12px; color: rgba(255,255,255,0.65); letter-spacing: 0.06em; display: flex; align-items: center; gap: 8px; }
+  .diagram-label::before { content: ''; width: 8px; height: 8px; background: var(--gold); border-radius: 50%; }
+  .diagram-body { padding: 32px; overflow-x: auto; }
+
+  /* ROI TABLE */
+  .roi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media(max-width: 700px) { .roi-grid { grid-template-columns: 1fr; } }
+
+  /* FOOTER */
+  footer { background: var(--navy); padding: 40px 2rem; text-align: center; }
+  footer p { color: rgba(255,255,255,0.4); font-size: 12.5px; }
+  footer strong { color: var(--gold-light); }
+
+  /* PRINT */
+  @media print { nav { position: static; } section { page-break-inside: avoid; } }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">FUTURENSE AI CLINIC</div>
+    <div class="nav-links">
+      <a href="#executive">Overview</a>
+      <a href="#brd">BRD</a>
+      <a href="#market">Market</a>
+      <a href="#challenges">Challenges</a>
+      <a href="#frd">FRD</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#roi">ROI</a>
+      <a href="#timeline">Roadmap</a>
+    </div>
+    <div class="nav-badge">
+      <span class="badge-pill">MVP · April 2026</span>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="executive">
+  <div class="hero-inner">
+    <div class="hero-tag"><span></span> Project 4 · Travel / Hospitality / PropTech</div>
+    <h1>The <span>Digital Footprint</span><br>User Journey Intelligence</h1>
+    <p class="hero-subtitle">Converting Raw Clickstreams into First-Booking Destination Prediction — A Cold-Start Machine Learning System for Global Travel Platforms</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><div class="label">Client Sector</div><div class="value">Travel & Hospitality</div></div>
+      <div class="hero-meta-item"><div class="label">Format</div><div class="value">MVP / Proof of Concept</div></div>
+      <div class="hero-meta-item"><div class="label">Duration</div><div class="value">2 Sprints · 10 Working Days</div></div>
+      <div class="hero-meta-item"><div class="label">Data Source</div><div class="value">Airbnb Kaggle Competition</div></div>
+      <div class="hero-meta-item"><div class="label">Primary Metric</div><div class="value">NDCG@5 / Conversion Lift</div></div>
+    </div>
+    <div class="hero-stat-grid">
+      <div class="hero-stat">
+        <div class="num">$1.5T</div>
+        <div class="desc">Global travel market size (2025)</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">10M+</div>
+        <div class="desc">Clickstream rows in sessions dataset</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">2–4%</div>
+        <div class="desc">Target conversion rate improvement</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">$30M+</div>
+        <div class="desc">Projected annual revenue impact</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BRD -->
+<section id="brd">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">BRD · Business Requirements Document</div>
+      <h2>Business Context &amp; Requirements</h2>
+      <p>Defining the organizational need, stakeholder expectations, and measurable business outcomes that this ML system must deliver.</p>
+    </div>
+
+    <div class="card-grid-2" style="margin-bottom: 32px;">
+      <div class="card card-accent">
+        <h3>Executive Problem Statement</h3>
+        <p>A global travel platform loses significant booking revenue because new user homepages display generic content. The platform cannot predict where a new user wants to travel until they actively search — missing the critical first-impression personalization window. This cold-start problem means the platform treats its first 60 seconds with every new user as a blank slate, when in fact their demographic profile and early click behavior already carry predictive signal.</p>
+      </div>
+      <div class="card card-accent">
+        <h3>Business Opportunity</h3>
+        <p>Browse-to-book conversion is the single most important funnel metric in the travel industry. A system that predicts a user's first booking destination within their first session — before any explicit search — enables real-time homepage personalization, targeted email campaigns within hours of signup, smarter ad re-targeting, and inventory pre-caching. Even a 2% conversion improvement on a platform processing $1.5B in annual bookings generates $30M in incremental revenue.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom: 32px;">
+      <h3 style="margin-bottom: 20px;">Business Requirements Summary</h3>
+      <table class="data-table">
+        <thead>
+          <tr><th>Ref</th><th>Requirement</th><th>Rationale</th><th>Priority</th><th>Acceptance Criteria</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>BR-01</td><td>Predict first booking destination from signup data + first session</td><td>Enables real-time personalization before any search occurs</td><td><span class="pill pill-crit">Critical</span></td><td>Model returns top-5 destination predictions within 200ms</td></tr>
+          <tr><td>BR-02</td><td>Handle users with zero session data (cold-start)</td><td>~20% of users have no session records at model scoring time</td><td><span class="pill pill-high">High</span></td><td>Fallback model serves all users; no null prediction errors</td></tr>
+          <tr><td>BR-03</td><td>Support 12 destination classes including NDF (no booking)</td><td>Business needs to identify non-converters early to trigger intervention</td><td><span class="pill pill-crit">Critical</span></td><td>Model classifies all 12 classes with calibrated probabilities</td></tr>
+          <tr><td>BR-04</td><td>Class imbalance handling (60% NDF, 30% US)</td><td>Naive model will predict US/NDF for all users — business needs rare destination coverage</td><td><span class="pill pill-crit">Critical</span></td><td>Recall for minority destinations ≥ 40%</td></tr>
+          <tr><td>BR-05</td><td>Feature pipeline executes in under 500ms at inference</td><td>Real-time personalization requires sub-second response</td><td><span class="pill pill-high">High</span></td><td>P99 latency &lt; 500ms on production hardware</td></tr>
+          <tr><td>BR-06</td><td>Model explainability for marketing team</td><td>Marketing cannot act on a black-box — needs interpretable feature importances</td><td><span class="pill pill-med">Medium</span></td><td>SHAP values available for top-10 features per prediction</td></tr>
+          <tr><td>BR-07</td><td>Retraining pipeline executable bi-weekly</td><td>User behavior patterns shift; model decay must be managed</td><td><span class="pill pill-med">Medium</span></td><td>Automated retraining triggered on performance degradation &gt; 5%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card-grid-3">
+      <div class="card">
+        <h3>Key Stakeholders</h3>
+        <ul class="check-list">
+          <li>VP of Product (Personalization) — primary sponsor</li>
+          <li>Head of Growth Marketing — email campaign targeting</li>
+          <li>Data Engineering — pipeline ownership post-MVP</li>
+          <li>VP of Data Science — model sign-off authority</li>
+          <li>Legal / Privacy — data usage compliance</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Success Metrics</h3>
+        <ul class="check-list">
+          <li>NDCG@5 ≥ 0.88 on held-out test set</li>
+          <li>+2% browse-to-book conversion in A/B test</li>
+          <li>Email CTR increase ≥ 15% with targeted campaigns</li>
+          <li>NDF recall ≥ 75% (identifies non-converters)</li>
+          <li>Minority destination recall ≥ 40%</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Assumptions &amp; Constraints</h3>
+        <ul class="check-list">
+          <li>GDPR/data privacy compliance required for all features</li>
+          <li>Session data available within 60 seconds of user action</li>
+          <li>Model must degrade gracefully with partial data</li>
+          <li>No real-time streaming — batch scoring acceptable for MVP</li>
+          <li>Kaggle dataset used as proxy for production data in MVP</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARKET -->
+<section id="market" style="background: var(--navy);">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag" style="color: var(--gold-light); border-color: var(--gold);">Market Intelligence</div>
+      <h2 style="color: var(--white);">Why This Matters Now</h2>
+      <p style="color: rgba(255,255,255,0.55);">The global travel market is recovering and accelerating into an AI-personalization era. The platforms that master first-session intelligence will capture disproportionate share.</p>
+    </div>
+    <div class="metric-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+      <div class="metric-card light">
+        <div class="m-label">Global Travel Market 2025</div>
+        <div class="m-value">$1.5T</div>
+        <div class="m-sub">CAGR +8.4% through 2030</div>
+      </div>
+      <div class="metric-card light">
+        <div class="m-label">Online Travel Segment</div>
+        <div class="m-value">$835B</div>
+        <div class="m-sub">56% of total market, digital-first</div>
+      </div>
+      <div class="metric-card light">
+        <div class="m-label">Avg Booking Value</div>
+        <div class="m-value">$1,200</div>
+        <div class="m-sub">International booking average (Airbnb proxy)</div>
+      </div>
+      <div class="metric-card light">
+        <div class="m-label">Typical Browse-to-Book Rate</div>
+        <div class="m-value">3.5%</div>
+        <div class="m-sub">Industry benchmark (unoptimized)</div>
+      </div>
+      <div class="metric-card light">
+        <div class="m-label">Sessions per User (Avg)</div>
+        <div class="m-value">7.2</div>
+        <div class="m-sub">Before first booking decision</div>
+      </div>
+      <div class="metric-card light">
+        <div class="m-label">Revenue from 2% Lift</div>
+        <div class="m-value">$30M+</div>
+        <div class="m-sub">At $1B annual platform GMV</div>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 32px;">
+      <div class="card" style="border-color: rgba(200,151,42,0.3);">
+        <h3 style="color: var(--navy);">Competitive Landscape</h3>
+        <p style="color: #555; font-size: 14px;">Booking.com, Expedia, and Airbnb have all filed patents on behavioral prediction systems. First-session personalization is an active battleground. The platforms solving cold-start fastest are winning new user activation — the key metric in a post-cookie, privacy-first world.</p>
+        <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border);">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px;">
+            <span style="color: #666;">Booking.com personalization coverage</span>
+            <span style="font-weight: 600;">~85%</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px;">
+            <span style="color: #666;">Expedia AI recommendation engine maturity</span>
+            <span style="font-weight: 600;">Advanced</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 13px;">
+            <span style="color: #666;">Airbnb ML-driven personalization since</span>
+            <span style="font-weight: 600;">2015</span>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="border-color: rgba(200,151,42,0.3);">
+        <h3 style="color: var(--navy);">Business Impact Model</h3>
+        <table style="width: 100%; font-size: 13.5px; border-collapse: collapse;">
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding: 8px 0; color: #666;">Monthly new users (assumption)</td>
+            <td style="padding: 8px 0; text-align: right; font-weight: 600;">500,000</td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding: 8px 0; color: #666;">Current browse-to-book rate</td>
+            <td style="padding: 8px 0; text-align: right; font-weight: 600;">3.5%</td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding: 8px 0; color: #666;">Projected rate with personalization</td>
+            <td style="padding: 8px 0; text-align: right; font-weight: 600; color: #1A6B45;">5.5%</td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding: 8px 0; color: #666;">Incremental bookings/month</td>
+            <td style="padding: 8px 0; text-align: right; font-weight: 600;">10,000</td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding: 8px 0; color: #666;">Avg booking value</td>
+            <td style="padding: 8px 0; text-align: right; font-weight: 600;">$1,200</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; color: var(--navy); font-weight: 600;">Monthly revenue uplift</td>
+            <td style="padding: 8px 0; text-align: right; font-weight: 700; color: #1A6B45; font-size: 15px;">$12M</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHALLENGES -->
+<section id="challenges">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">Business &amp; Technical Challenges</div>
+      <h2>The Four Core Problem Dimensions</h2>
+      <p>Each challenge below represents a distinct failure mode that must be addressed for the system to deliver business value. Ignoring any one of them produces a model that looks good in notebooks but fails in production.</p>
+    </div>
+
+    <div class="challenge-grid">
+      <div class="challenge-card red">
+        <div class="challenge-num">CHALLENGE 01</div>
+        <h3>Cold-Start Problem</h3>
+        <p>At the moment a user lands on the platform, the system knows almost nothing about them. There is no booking history, no stated preferences, and potentially only seconds of click behavior. Standard collaborative filtering and recommendation systems completely fail here because they require existing user-item interaction history to compute similarity.</p>
+        <div class="challenge-impact">
+          <div class="impact-dot" style="background: #E53E3E;"></div>
+          <span style="color: #E53E3E;">Affects 100% of new users at activation moment</span>
+        </div>
+        <div style="margin-top: 16px; padding: 12px; background: #FEF2F2; border-radius: 8px; font-size: 13px; color: #7F1D1D;">
+          <strong>Mitigation:</strong> Demographic-first model + behavioral augmentation. Dual-model architecture: one for users with sessions, one for zero-session users. Graceful degradation guaranteed.
+        </div>
+      </div>
+
+      <div class="challenge-card amber">
+        <div class="challenge-num">CHALLENGE 02</div>
+        <h3>Severe Class Imbalance</h3>
+        <p>The target variable has 12 classes. "NDF" (no booking) accounts for ~60% of all users. "US" accounts for ~30%. The remaining 10 international destinations share only 10% of observations. A naïve model that always predicts NDF or US achieves 90% accuracy — while delivering zero business value for personalization targeting international destinations.</p>
+        <div class="challenge-impact">
+          <div class="impact-dot" style="background: #D69E2E;"></div>
+          <span style="color: #D69E2E;">10 destination classes have &lt;1% representation each</span>
+        </div>
+        <div style="margin-top: 16px; padding: 12px; background: #FFFBEB; border-radius: 8px; font-size: 13px; color: #78350F;">
+          <strong>Mitigation:</strong> SMOTE / class-weight balancing, NDCG@5 as primary metric (not accuracy), ensemble methods with per-class calibration, oversampling minority destinations.
+        </div>
+      </div>
+
+      <div class="challenge-card blue">
+        <div class="challenge-num">CHALLENGE 03</div>
+        <h3>Aggregation Design Complexity</h3>
+        <p>The sessions table has 10M+ rows of raw clickstream events. One user may have 500 action records; another may have 3. The model requires a single fixed-length feature vector per user. How you collapse session rows into features determines the ceiling of your model. Average time-on-page? Action sequence TF-IDF? Last-action weighting? These design decisions are where the real ML work happens, yet there are no labels to guide them — only domain intuition and offline experiments.</p>
+        <div class="challenge-impact">
+          <div class="impact-dot" style="background: #2B6CB0;"></div>
+          <span style="color: #2B6CB0;">Feature engineering drives 80% of model performance</span>
+        </div>
+        <div style="margin-top: 16px; padding: 12px; background: #EBF8FF; border-radius: 8px; font-size: 13px; color: #1A365D;">
+          <strong>Mitigation:</strong> Systematic aggregation grid (count / mean / max / last / TF-IDF), recency weighting (exponential decay), action-type hierarchies, sequence embedding via action "documents."
+        </div>
+      </div>
+
+      <div class="challenge-card teal">
+        <div class="challenge-num">CHALLENGE 04</div>
+        <h3>Text-as-Structured-Signal</h3>
+        <p>Device type strings, action names, action types, and action details in the sessions table are categorical string fields that carry rich implicit signal. A user browsing on a recent iPhone in English from San Francisco has a fundamentally different booking profile from one on an Android in Portuguese from São Paulo. These strings need cleaning, clustering, and feature extraction — but they are not natural language, they are coded labels, requiring a hybrid NLP + categorical approach.</p>
+        <div class="challenge-impact">
+          <div class="impact-dot" style="background: #2C7A7B;"></div>
+          <span style="color: #2C7A7B;">Device + language signals correlate with booking destination</span>
+        </div>
+        <div style="margin-top: 16px; padding: 12px; background: #E6FFFA; border-radius: 8px; font-size: 13px; color: #1D4044;">
+          <strong>Mitigation:</strong> Label encoding + frequency encoding for high-cardinality fields, action sequence treated as a "document" with TF-IDF / Word2Vec, device proxy features (OS recency, screen class), language as geo-proxy.
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: 32px; border-left: 3px solid var(--gold);">
+      <h3 style="margin-bottom: 16px;">Business Risk Matrix</h3>
+      <table class="data-table">
+        <thead><tr><th>Risk</th><th>Probability</th><th>Business Impact</th><th>Mitigation</th></tr></thead>
+        <tbody>
+          <tr><td>Model predicts only NDF/US due to imbalance</td><td><span class="pill pill-crit">High</span></td><td>No personalization value delivered, project cancelled</td><td>SMOTE + NDCG@5 as primary metric</td></tr>
+          <tr><td>Feature pipeline latency exceeds SLA</td><td><span class="pill pill-med">Medium</span></td><td>Cannot serve real-time homepage personalization</td><td>Batch pre-computation + caching layer</td></tr>
+          <tr><td>Model decay within 30 days</td><td><span class="pill pill-high">High</span></td><td>Silent performance degradation, revenue impact invisible</td><td>Automated drift monitoring + bi-weekly retraining</td></tr>
+          <tr><td>GDPR violation from behavioral profiling</td><td><span class="pill pill-low">Low</span></td><td>Regulatory fine + brand damage</td><td>Aggregated features only, no PII in model inputs</td></tr>
+          <tr><td>Cold-start null predictions crash homepage</td><td><span class="pill pill-med">Medium</span></td><td>User experience failure at activation</td><td>Fallback to popularity-based recommendations</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- FRD -->
+<section id="frd">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">FRD · Functional Requirements Document</div>
+      <h2>System &amp; Feature Specifications</h2>
+      <p>Detailed functional blueprint for the ML pipeline, feature engineering strategy, model requirements, and evaluation framework.</p>
+    </div>
+
+    <div class="card-grid-2" style="margin-bottom: 32px;">
+      <div>
+        <div class="card" style="margin-bottom: 20px;">
+          <h3>Data Requirements</h3>
+          <table class="data-table" style="margin-top: 12px;">
+            <thead><tr><th>Table</th><th>Rows</th><th>Key Fields</th><th>Usage</th></tr></thead>
+            <tbody>
+              <tr><td>users</td><td>~213K</td><td>age, gender, signup_method, language, affiliate_channel, destination</td><td>Demographics + label</td></tr>
+              <tr><td>sessions</td><td>10.5M+</td><td>user_id, action, action_type, action_detail, device_type, secs_elapsed</td><td>Behavioral features</td></tr>
+              <tr><td>countries</td><td>10</td><td>destination, lat, lng, km_from_US</td><td>Geo enrichment</td></tr>
+              <tr><td>age_gender_bkts</td><td>420</td><td>age_bucket, gender, destination, population</td><td>Prior distribution</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <h3>Feature Engineering Catalogue</h3>
+          <table class="data-table" style="margin-top: 12px;">
+            <thead><tr><th>Feature Group</th><th>Features</th><th>Strategy</th></tr></thead>
+            <tbody>
+              <tr><td>Demographics</td><td>age_bucket, gender, language, signup_method, affiliate_channel, first_device</td><td>Label encode + mean target encode</td></tr>
+              <tr><td>Temporal</td><td>signup_dow, signup_hour, days_to_first_active</td><td>Cyclic encoding for DOW/hour</td></tr>
+              <tr><td>Session Counts</td><td>total_actions, unique_actions, total_time_elapsed</td><td>Raw + log-transform</td></tr>
+              <tr><td>Session Aggregates</td><td>mean/max/last secs_elapsed, action frequency ratios</td><td>GroupBy + pivot</td></tr>
+              <tr><td>Action Sequences</td><td>TF-IDF on action sequence "document"</td><td>Top-50 TF-IDF components</td></tr>
+              <tr><td>Device Signals</td><td>device_type_encoded, OS_proxy, browser_encoded</td><td>Frequency + embedding</td></tr>
+              <tr><td>Recency</td><td>Exponential-decay weighted action counts</td><td>λ = 0.5 decay factor</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom: 20px;">
+          <h3>Model Requirements</h3>
+          <ul class="check-list" style="margin-top: 8px;">
+            <li>Multi-class classification (12 classes) with calibrated probability outputs</li>
+            <li>Dual-model architecture: full model (with sessions) + fallback model (demographics only)</li>
+            <li>Primary algorithm: XGBoost / LightGBM ensemble (gradient boosted trees proven optimal for tabular + imbalanced multi-class)</li>
+            <li>Secondary experiment: Random Forest baseline for comparison</li>
+            <li>Class weighting: inverse frequency weighting applied to all models</li>
+            <li>Evaluation metric: NDCG@5 (Normalized Discounted Cumulative Gain at rank 5)</li>
+            <li>Cross-validation: Stratified 5-fold (preserves class distribution per fold)</li>
+            <li>Hyperparameter optimization: Optuna Bayesian search, 100 trials</li>
+            <li>SHAP integration for feature importance and per-prediction explainability</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>System Non-Functional Requirements</h3>
+          <table class="data-table" style="margin-top: 12px;">
+            <thead><tr><th>NFR</th><th>Requirement</th><th>Priority</th></tr></thead>
+            <tbody>
+              <tr><td>Latency</td><td>P99 scoring latency &lt; 500ms</td><td><span class="pill pill-crit">Critical</span></td></tr>
+              <tr><td>Throughput</td><td>Batch process 10K users/hour minimum</td><td><span class="pill pill-high">High</span></td></tr>
+              <tr><td>Availability</td><td>Model serving uptime ≥ 99.5%</td><td><span class="pill pill-high">High</span></td></tr>
+              <tr><td>Monitoring</td><td>Drift alerts when NDCG drops &gt;5%</td><td><span class="pill pill-med">Medium</span></td></tr>
+              <tr><td>Privacy</td><td>No raw PII in feature store or logs</td><td><span class="pill pill-crit">Critical</span></td></tr>
+              <tr><td>Retraining</td><td>Full pipeline re-runnable in &lt; 2 hours</td><td><span class="pill pill-med">Medium</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-accent">
+      <h3 style="margin-bottom: 16px;">Text Intelligence Pipeline (NLP Layer)</h3>
+      <div class="card-grid-3" style="margin-top: 0;">
+        <div style="padding-right: 20px; border-right: 1px solid var(--border);">
+          <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold); font-weight: 600; margin-bottom: 8px;">Step 1 · Cleaning</div>
+          <ul class="check-list">
+            <li>Lowercase + strip whitespace on all string columns</li>
+            <li>Unify device type variants (e.g. "iPad", "ipad", "IPAD")</li>
+            <li>Map null action_detail to "none" sentinel</li>
+            <li>Remove action records with secs_elapsed &lt; 0 (invalid)</li>
+          </ul>
+        </div>
+        <div style="padding-right: 20px; border-right: 1px solid var(--border);">
+          <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold); font-weight: 600; margin-bottom: 8px;">Step 2 · Sequence Encoding</div>
+          <ul class="check-list">
+            <li>Concatenate per-user action sequences into "document" strings</li>
+            <li>Fit TF-IDF on training corpus, top 50 components</li>
+            <li>Experiment: Word2Vec on action sequences (action2vec)</li>
+            <li>Recency-weight: recent actions scored 2× earlier actions</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold); font-weight: 600; margin-bottom: 8px;">Step 3 · Signal Extraction</div>
+          <ul class="check-list">
+            <li>Device type → OS family + screen class proxy features</li>
+            <li>Language → geo-region proxy (16 language groups)</li>
+            <li>Action hierarchy: booking actions weighted 3× browse</li>
+            <li>Last-N actions: final 5 actions as separate categorical features</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section id="architecture">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">End-to-End Architecture</div>
+      <h2>ML Pipeline · Data to Prediction</h2>
+      <p>The complete system flow from raw data ingestion through feature engineering, model training, evaluation, and real-time serving.</p>
+    </div>
+
+    <div class="diagram-wrap" style="margin-bottom: 32px;">
+      <div class="diagram-label">E2E ML Pipeline — Data Ingestion to Prediction Serving</div>
+      <div class="diagram-body">
+        <svg width="100%" viewBox="0 0 1060 680" role="img" xmlns="http://www.w3.org/2000/svg">
+          <title>End-to-End ML Pipeline Diagram</title>
+          <desc>Complete ML pipeline from raw data sources through feature engineering, model training, evaluation, and real-time prediction serving.</desc>
+          <defs>
+            <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </marker>
+          </defs>
+
+          <!-- Layer labels -->
+          <text x="30" y="30" font-family="'DM Mono', monospace" font-size="10" fill="#999" letter-spacing="0.08em">01 DATA SOURCES</text>
+          <text x="30" y="175" font-family="'DM Mono', monospace" font-size="10" fill="#999" letter-spacing="0.08em">02 INGESTION</text>
+          <text x="30" y="300" font-family="'DM Mono', monospace" font-size="10" fill="#999" letter-spacing="0.08em">03 FEATURE ENG.</text>
+          <text x="30" y="430" font-family="'DM Mono', monospace" font-size="10" fill="#999" letter-spacing="0.08em">04 MODELING</text>
+          <text x="30" y="560" font-family="'DM Mono', monospace" font-size="10" fill="#999" letter-spacing="0.08em">05 SERVING</text>
+
+          <!-- Divider lines -->
+          <line x1="30" y1="145" x2="1040" y2="145" stroke="#eee" stroke-width="1"/>
+          <line x1="30" y1="270" x2="1040" y2="270" stroke="#eee" stroke-width="1"/>
+          <line x1="30" y1="400" x2="1040" y2="400" stroke="#eee" stroke-width="1"/>
+          <line x1="30" y1="530" x2="1040" y2="530" stroke="#eee" stroke-width="1"/>
+
+          <!-- DATA SOURCES ROW -->
+          <!-- Users CSV -->
+          <rect x="120" y="45" width="140" height="80" rx="8" fill="#EBF8FF" stroke="#2B6CB0" stroke-width="1"/>
+          <text x="190" y="75" font-family="'DM Sans', sans-serif" font-size="13" font-weight="600" fill="#1A365D" text-anchor="middle">users.csv</text>
+          <text x="190" y="93" font-family="'DM Sans', sans-serif" font-size="11" fill="#2C5282" text-anchor="middle">213K rows</text>
+          <text x="190" y="110" font-family="'DM Sans', sans-serif" font-size="11" fill="#2C5282" text-anchor="middle">Demographics + Label</text>
+
+          <!-- Sessions CSV -->
+          <rect x="310" y="45" width="140" height="80" rx="8" fill="#FEF3C7" stroke="#D69E2E" stroke-width="1"/>
+          <text x="380" y="75" font-family="'DM Sans', sans-serif" font-size="13" font-weight="600" fill="#78350F" text-anchor="middle">sessions.csv</text>
+          <text x="380" y="93" font-family="'DM Sans', sans-serif" font-size="11" fill="#92400E" text-anchor="middle">10.5M+ rows</text>
+          <text x="380" y="110" font-family="'DM Sans', sans-serif" font-size="11" fill="#92400E" text-anchor="middle">Clickstream Events</text>
+
+          <!-- Countries -->
+          <rect x="500" y="45" width="140" height="80" rx="8" fill="#F0FFF4" stroke="#276749" stroke-width="1"/>
+          <text x="570" y="75" font-family="'DM Sans', sans-serif" font-size="13" font-weight="600" fill="#1C4532" text-anchor="middle">countries.csv</text>
+          <text x="570" y="93" font-family="'DM Sans', sans-serif" font-size="11" fill="#276749" text-anchor="middle">10 destinations</text>
+          <text x="570" y="110" font-family="'DM Sans', sans-serif" font-size="11" fill="#276749" text-anchor="middle">Geo Enrichment</text>
+
+          <!-- Age/Gender -->
+          <rect x="690" y="45" width="140" height="80" rx="8" fill="#FAF5FF" stroke="#6B46C1" stroke-width="1"/>
+          <text x="760" y="75" font-family="'DM Sans', sans-serif" font-size="13" font-weight="600" fill="#44337A" text-anchor="middle">age_gender_bkts</text>
+          <text x="760" y="93" font-family="'DM Sans', sans-serif" font-size="11" fill="#553C9A" text-anchor="middle">420 rows</text>
+          <text x="760" y="110" font-family="'DM Sans', sans-serif" font-size="11" fill="#553C9A" text-anchor="middle">Prior Distributions</text>
+
+          <!-- INGESTION ROW -->
+          <!-- Data validation -->
+          <rect x="180" y="160" width="160" height="88" rx="8" fill="#0A1628" stroke="#C8972A" stroke-width="1"/>
+          <text x="260" y="190" font-family="'DM Sans', sans-serif" font-size="13" font-weight="600" fill="#E4B84A" text-anchor="middle">Data Validation</text>
+          <text x="260" y="208" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">Schema checks</text>
+          <text x="260" y="224" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">Null profiling</text>
+          <text x="260" y="240" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">Outlier detection</text>
+
+          <!-- User-Session Join -->
+          <rect x="410" y="160" width="160" height="88" rx="8" fill="#0A1628" stroke="#C8972A" stroke-width="1"/>
+          <text x="490" y="190" font-family="'DM Sans', sans-serif" font-size="13" font-weight="600" fill="#E4B84A" text-anchor="middle">Join + Merge</text>
+          <text x="490" y="208" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">user LEFT JOIN sessions</text>
+          <text x="490" y="224" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">Handle missing sessions</text>
+          <text x="490" y="240" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">Flag zero-session users</text>
+
+          <!-- EDA -->
+          <rect x="640" y="160" width="160" height="88" rx="8" fill="#0A1628" stroke="#C8972A" stroke-width="1"/>
+          <text x="720" y="190" font-family="'DM Sans', sans-serif" font-size="13" font-weight="600" fill="#E4B84A" text-anchor="middle">EDA &amp; Profiling</text>
+          <text x="720" y="208" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">Distribution analysis</text>
+          <text x="720" y="224" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">Class imbalance audit</text>
+          <text x="720" y="240" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">Correlation heatmap</text>
+
+          <!-- FEATURE ENG ROW -->
+          <!-- Demo features -->
+          <rect x="120" y="284" width="130" height="96" rx="8" fill="#EBF8FF" stroke="#2B6CB0" stroke-width="1"/>
+          <text x="185" y="310" font-family="'DM Sans', sans-serif" font-size="12" font-weight="600" fill="#1A365D" text-anchor="middle">Demographic</text>
+          <text x="185" y="326" font-family="'DM Sans', sans-serif" font-size="12" font-weight="600" fill="#1A365D" text-anchor="middle">Features</text>
+          <text x="185" y="346" font-family="'DM Sans', sans-serif" font-size="11" fill="#2C5282" text-anchor="middle">Age / gender / language</text>
+          <text x="185" y="362" font-family="'DM Sans', sans-serif" font-size="11" fill="#2C5282" text-anchor="middle">Signup method</text>
+          <text x="185" y="373" font-family="'DM Sans', sans-serif" font-size="11" fill="#2C5282" text-anchor="middle">Affiliate channel</text>
+
+          <!-- Session features -->
+          <rect x="295" y="284" width="130" height="96" rx="8" fill="#FEF3C7" stroke="#D69E2E" stroke-width="1"/>
+          <text x="360" y="310" font-family="'DM Sans', sans-serif" font-size="12" font-weight="600" fill="#78350F" text-anchor="middle">Session</text>
+          <text x="360" y="326" font-family="'DM Sans', sans-serif" font-size="12" font-weight="600" fill="#78350F" text-anchor="middle">Aggregates</text>
+          <text x="360" y="346" font-family="'DM Sans', sans-serif" font-size="11" fill="#92400E" text-anchor="middle">Count / mean / max</text>
+          <text x="360" y="362" font-family="'DM Sans', sans-serif" font-size="11" fill="#92400E" text-anchor="middle">Total elapsed time</text>
+          <text x="360" y="373" font-family="'DM Sans', sans-serif" font-size="11" fill="#92400E" text-anchor="middle">Recency weights</text>
+
+          <!-- NLP features -->
+          <rect x="470" y="284" width="130" height="96" rx="8" fill="#F0FFF4" stroke="#276749" stroke-width="1"/>
+          <text x="535" y="310" font-family="'DM Sans', sans-serif" font-size="12" font-weight="600" fill="#1C4532" text-anchor="middle">NLP / Text</text>
+          <text x="535" y="326" font-family="'DM Sans', sans-serif" font-size="12" font-weight="600" fill="#1C4532" text-anchor="middle">Features</text>
+          <text x="535" y="346" font-family="'DM Sans', sans-serif" font-size="11" fill="#276749" text-anchor="middle">TF-IDF action seq.</text>
+          <text x="535" y="362" font-family="'DM Sans', sans-serif" font-size="11" fill="#276749" text-anchor="middle">Action2Vec embed.</text>
+          <text x="535" y="373" font-family="'DM Sans', sans-serif" font-size="11" fill="#276749" text-anchor="middle">Device type proxy</text>
+
+          <!-- Temporal features -->
+          <rect x="645" y="284" width="130" height="96" rx="8" fill="#FAF5FF" stroke="#6B46C1" stroke-width="1"/>
+          <text x="710" y="310" font-family="'DM Sans', sans-serif" font-size="12" font-weight="600" fill="#44337A" text-anchor="middle">Temporal</text>
+          <text x="710" y="326" font-family="'DM Sans', sans-serif" font-size="12" font-weight="600" fill="#44337A" text-anchor="middle">Features</text>
+          <text x="710" y="346" font-family="'DM Sans', sans-serif" font-size="11" fill="#553C9A" text-anchor="middle">Signup DOW/hour</text>
+          <text x="710" y="362" font-family="'DM Sans', sans-serif" font-size="11" fill="#553C9A" text-anchor="middle">Days to first active</text>
+          <text x="710" y="373" font-family="'DM Sans', sans-serif" font-size="11" fill="#553C9A" text-anchor="middle">Cyclic encoding</text>
+
+          <!-- Feature Vector Merge -->
+          <rect x="820" y="284" width="130" height="96" rx="8" fill="#0A1628" stroke="#C8972A" stroke-width="1.5"/>
+          <text x="885" y="316" font-family="'DM Sans', sans-serif" font-size="13" font-weight="600" fill="#E4B84A" text-anchor="middle">Feature Vector</text>
+          <text x="885" y="334" font-family="'DM Sans', sans-serif" font-size="13" font-weight="600" fill="#E4B84A" text-anchor="middle">Assembly</text>
+          <text x="885" y="354" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">~200 features/user</text>
+          <text x="885" y="370" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">Impute + scale</text>
+
+          <!-- MODELING ROW -->
+          <!-- Full model -->
+          <rect x="130" y="415" width="175" height="96" rx="8" fill="#0A1628" stroke="#1A6B45" stroke-width="1.5"/>
+          <text x="218" y="440" font-family="'DM Sans', sans-serif" font-size="12" font-weight="600" fill="#68D391" text-anchor="middle">Full Model</text>
+          <text x="218" y="458" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">XGBoost / LightGBM</text>
+          <text x="218" y="474" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">Users WITH sessions</text>
+          <text x="218" y="490" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">~180K training samples</text>
+          <text x="218" y="505" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">Stratified 5-fold CV</text>
+
+          <!-- Fallback model -->
+          <rect x="355" y="415" width="175" height="96" rx="8" fill="#0A1628" stroke="#C05621" stroke-width="1.5"/>
+          <text x="443" y="440" font-family="'DM Sans', sans-serif" font-size="12" font-weight="600" fill="#FBD38D" text-anchor="middle">Fallback Model</text>
+          <text x="443" y="458" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">Random Forest</text>
+          <text x="443" y="474" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">Zero-session users</text>
+          <text x="443" y="490" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">Demo features only</text>
+          <text x="443" y="505" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">Graceful degradation</text>
+
+          <!-- Evaluation -->
+          <rect x="580" y="415" width="175" height="96" rx="8" fill="#0A1628" stroke="#6B46C1" stroke-width="1.5"/>
+          <text x="668" y="440" font-family="'DM Sans', sans-serif" font-size="12" font-weight="600" fill="#D6BCFA" text-anchor="middle">Evaluation</text>
+          <text x="668" y="458" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">NDCG@5 (primary)</text>
+          <text x="668" y="474" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">Recall per class</text>
+          <text x="668" y="490" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">Confusion matrix</text>
+          <text x="668" y="505" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">SHAP explainability</text>
+
+          <!-- Model Registry -->
+          <rect x="805" y="415" width="175" height="96" rx="8" fill="#0A1628" stroke="#C8972A" stroke-width="1.5"/>
+          <text x="893" y="440" font-family="'DM Sans', sans-serif" font-size="12" font-weight="600" fill="#E4B84A" text-anchor="middle">Model Registry</text>
+          <text x="893" y="458" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">MLflow tracking</text>
+          <text x="893" y="474" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">Versioned artifacts</text>
+          <text x="893" y="490" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">A/B test config</text>
+          <text x="893" y="505" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.7)" text-anchor="middle">Rollback capability</text>
+
+          <!-- SERVING ROW -->
+          <!-- Homepage API -->
+          <rect x="130" y="545" width="175" height="88" rx="8" fill="#F0FFF4" stroke="#276749" stroke-width="1"/>
+          <text x="218" y="570" font-family="'DM Sans', sans-serif" font-size="12" font-weight="600" fill="#1C4532" text-anchor="middle">Homepage API</text>
+          <text x="218" y="588" font-family="'DM Sans', sans-serif" font-size="11" fill="#276749" text-anchor="middle">Real-time personalization</text>
+          <text x="218" y="604" font-family="'DM Sans', sans-serif" font-size="11" fill="#276749" text-anchor="middle">Top-5 destination cards</text>
+          <text x="218" y="620" font-family="'DM Sans', sans-serif" font-size="11" fill="#276749" text-anchor="middle">&lt;200ms latency target</text>
+
+          <!-- Email Campaign -->
+          <rect x="355" y="545" width="175" height="88" rx="8" fill="#EBF8FF" stroke="#2B6CB0" stroke-width="1"/>
+          <text x="443" y="570" font-family="'DM Sans', sans-serif" font-size="12" font-weight="600" fill="#1A365D" text-anchor="middle">Email Targeting</text>
+          <text x="443" y="588" font-family="'DM Sans', sans-serif" font-size="11" fill="#2C5282" text-anchor="middle">Segment by top-1 pred.</text>
+          <text x="443" y="604" font-family="'DM Sans', sans-serif" font-size="11" fill="#2C5282" text-anchor="middle">NDF users → re-engage</text>
+          <text x="443" y="620" font-family="'DM Sans', sans-serif" font-size="11" fill="#2C5282" text-anchor="middle">Triggered within 2 hrs</text>
+
+          <!-- Monitoring -->
+          <rect x="580" y="545" width="175" height="88" rx="8" fill="#FAF5FF" stroke="#6B46C1" stroke-width="1"/>
+          <text x="668" y="570" font-family="'DM Sans', sans-serif" font-size="12" font-weight="600" fill="#44337A" text-anchor="middle">Drift Monitoring</text>
+          <text x="668" y="588" font-family="'DM Sans', sans-serif" font-size="11" fill="#553C9A" text-anchor="middle">Weekly NDCG checks</text>
+          <text x="668" y="604" font-family="'DM Sans', sans-serif" font-size="11" fill="#553C9A" text-anchor="middle">Distribution alerts</text>
+          <text x="668" y="620" font-family="'DM Sans', sans-serif" font-size="11" fill="#553C9A" text-anchor="middle">Auto-retrain trigger</text>
+
+          <!-- Business Dashboard -->
+          <rect x="805" y="545" width="175" height="88" rx="8" fill="#FEF3C7" stroke="#D69E2E" stroke-width="1"/>
+          <text x="893" y="570" font-family="'DM Sans', sans-serif" font-size="12" font-weight="600" fill="#78350F" text-anchor="middle">Business Dashboard</text>
+          <text x="893" y="588" font-family="'DM Sans', sans-serif" font-size="11" fill="#92400E" text-anchor="middle">Conversion tracking</text>
+          <text x="893" y="604" font-family="'DM Sans', sans-serif" font-size="11" fill="#92400E" text-anchor="middle">Per-segment lift</text>
+          <text x="893" y="620" font-family="'DM Sans', sans-serif" font-size="11" fill="#92400E" text-anchor="middle">SHAP explanations</text>
+
+          <!-- ARROWS: Data Sources → Ingestion -->
+          <line x1="190" y1="125" x2="235" y2="158" stroke="#2B6CB0" stroke-width="1.2" marker-end="url(#arr)" fill="none"/>
+          <line x1="380" y1="125" x2="380" y2="158" stroke="#D69E2E" stroke-width="1.2" marker-end="url(#arr)" fill="none"/>
+          <line x1="570" y1="125" x2="530" y2="158" stroke="#276749" stroke-width="1.2" marker-end="url(#arr)" fill="none"/>
+          <line x1="760" y1="125" x2="750" y2="158" stroke="#6B46C1" stroke-width="1.2" marker-end="url(#arr)" fill="none"/>
+
+          <!-- Ingestion → Feature Eng -->
+          <line x1="260" y1="248" x2="215" y2="282" stroke="#888" stroke-width="1" marker-end="url(#arr)" fill="none"/>
+          <line x1="345" y1="248" x2="345" y2="282" stroke="#888" stroke-width="1" marker-end="url(#arr)" fill="none"/>
+          <line x1="490" y1="248" x2="505" y2="282" stroke="#888" stroke-width="1" marker-end="url(#arr)" fill="none"/>
+          <line x1="720" y1="248" x2="690" y2="282" stroke="#888" stroke-width="1" marker-end="url(#arr)" fill="none"/>
+
+          <!-- Feature groups → Feature Vector -->
+          <line x1="250" y1="330" x2="818" y2="330" stroke="#C8972A" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arr)" fill="none"/>
+          <line x1="425" y1="330" x2="818" y2="330" stroke="#C8972A" stroke-width="1.2" stroke-dasharray="4 3" fill="none"/>
+          <line x1="600" y1="330" x2="818" y2="330" stroke="#C8972A" stroke-width="1.2" stroke-dasharray="4 3" fill="none"/>
+          <line x1="710" y1="330" x2="818" y2="330" stroke="#C8972A" stroke-width="1.2" stroke-dasharray="4 3" fill="none"/>
+
+          <!-- Feature Vector → Models -->
+          <line x1="885" y1="380" x2="330" y2="413" stroke="#C8972A" stroke-width="1.2" marker-end="url(#arr)" fill="none"/>
+          <line x1="885" y1="380" x2="885" y2="413" stroke="#C8972A" stroke-width="1.2" marker-end="url(#arr)" fill="none"/>
+
+          <!-- Models → Evaluation -->
+          <line x1="305" y1="463" x2="578" y2="463" stroke="#888" stroke-width="1" marker-end="url(#arr)" fill="none"/>
+          <line x1="530" y1="463" x2="578" y2="463" stroke="#888" stroke-width="1" fill="none"/>
+
+          <!-- Evaluation → Model Registry -->
+          <line x1="755" y1="463" x2="803" y2="463" stroke="#888" stroke-width="1" marker-end="url(#arr)" fill="none"/>
+
+          <!-- Model Registry → Serving -->
+          <line x1="893" y1="511" x2="893" y2="543" stroke="#C8972A" stroke-width="1.2" marker-end="url(#arr)" fill="none"/>
+          <line x1="855" y1="543" x2="532" y2="543" stroke="#888" stroke-width="1" marker-end="url(#arr)" fill="none"/>
+          <line x1="530" y1="543" x2="310" y2="543" stroke="#888" stroke-width="1" marker-end="url(#arr)" fill="none"/>
+          <line x1="307" y1="543" x2="307" y2="543" stroke="#888" stroke-width="1" marker-end="url(#arr)" fill="none"/>
+
+          <!-- Has sessions decision diamond -->
+          <polygon points="885,370 905,383 885,395 865,383" fill="#C8972A" opacity="0.9"/>
+          <text x="885" y="387" font-family="'DM Sans', sans-serif" font-size="9" font-weight="600" fill="#0A1628" text-anchor="middle">HAS?</text>
+          <text x="920" y="396" font-family="'DM Sans', sans-serif" font-size="10" fill="#276749">YES</text>
+          <text x="830" y="396" font-family="'DM Sans', sans-serif" font-size="10" fill="#C05621">NO</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- COLD START DECISION DIAGRAM -->
+    <div class="diagram-wrap">
+      <div class="diagram-label">Cold-Start Decision Logic — Session Data Routing</div>
+      <div class="diagram-body">
+        <svg width="100%" viewBox="0 0 800 280" role="img" xmlns="http://www.w3.org/2000/svg">
+          <title>Cold-Start Decision Logic Diagram</title>
+          <desc>Decision tree showing how users are routed between full model and fallback model based on session data availability.</desc>
+          <defs>
+            <marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </marker>
+          </defs>
+
+          <!-- New User arrives -->
+          <rect x="320" y="20" width="160" height="50" rx="8" fill="#0A1628" stroke="#C8972A" stroke-width="1.5"/>
+          <text x="400" y="42" font-family="'DM Sans', sans-serif" font-size="13" font-weight="600" fill="#E4B84A" text-anchor="middle">New User Arrives</text>
+          <text x="400" y="58" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.65)" text-anchor="middle">Scoring request received</text>
+
+          <!-- Decision diamond -->
+          <polygon points="400,88 445,118 400,148 355,118" fill="#F7EDD0" stroke="#C8972A" stroke-width="1.5"/>
+          <text x="400" y="113" font-family="'DM Sans', sans-serif" font-size="11" font-weight="600" fill="#0A1628" text-anchor="middle">Session</text>
+          <text x="400" y="128" font-family="'DM Sans', sans-serif" font-size="11" font-weight="600" fill="#0A1628" text-anchor="middle">Data?</text>
+
+          <!-- YES branch -->
+          <line x1="445" y1="118" x2="555" y2="118" stroke="#276749" stroke-width="1.5" marker-end="url(#arr2)" fill="none"/>
+          <text x="500" y="110" font-family="'DM Sans', sans-serif" font-size="11" fill="#276749" text-anchor="middle">YES (~80%)</text>
+
+          <!-- NO branch -->
+          <line x1="355" y1="118" x2="245" y2="118" stroke="#C05621" stroke-width="1.5" marker-end="url(#arr2)" fill="none"/>
+          <text x="300" y="110" font-family="'DM Sans', sans-serif" font-size="11" fill="#C05621" text-anchor="middle">NO (~20%)</text>
+
+          <!-- Full model box -->
+          <rect x="555" y="88" width="185" height="80" rx="8" fill="#F0FFF4" stroke="#276749" stroke-width="1"/>
+          <text x="648" y="116" font-family="'DM Sans', sans-serif" font-size="12" font-weight="600" fill="#1C4532" text-anchor="middle">Full Model</text>
+          <text x="648" y="134" font-family="'DM Sans', sans-serif" font-size="11" fill="#276749" text-anchor="middle">XGBoost + Session Features</text>
+          <text x="648" y="150" font-family="'DM Sans', sans-serif" font-size="11" fill="#276749" text-anchor="middle">NDCG@5 ≥ 0.88 target</text>
+
+          <!-- Fallback model box -->
+          <rect x="60" y="88" width="185" height="80" rx="8" fill="#FEF3C7" stroke="#D69E2E" stroke-width="1"/>
+          <text x="153" y="116" font-family="'DM Sans', sans-serif" font-size="12" font-weight="600" fill="#78350F" text-anchor="middle">Fallback Model</text>
+          <text x="153" y="134" font-family="'DM Sans', sans-serif" font-size="11" fill="#92400E" text-anchor="middle">Random Forest, Demo Only</text>
+          <text x="153" y="150" font-family="'DM Sans', sans-serif" font-size="11" fill="#92400E" text-anchor="middle">No null predictions</text>
+
+          <!-- Both → Output -->
+          <line x1="648" y1="168" x2="648" y2="210" stroke="#276749" stroke-width="1.2" marker-end="url(#arr2)" fill="none"/>
+          <line x1="153" y1="168" x2="153" y2="210" stroke="#D69E2E" stroke-width="1.2" marker-end="url(#arr2)" fill="none"/>
+
+          <!-- Output boxes -->
+          <rect x="450" y="210" width="280" height="55" rx="8" fill="#0A1628" stroke="#C8972A" stroke-width="1.5"/>
+          <text x="590" y="233" font-family="'DM Sans', sans-serif" font-size="12" font-weight="600" fill="#E4B84A" text-anchor="middle">Top-5 Destination Predictions</text>
+          <text x="590" y="250" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.65)" text-anchor="middle">Calibrated probabilities for each class</text>
+
+          <rect x="70" y="210" width="280" height="55" rx="8" fill="#0A1628" stroke="#C8972A" stroke-width="1.5"/>
+          <text x="210" y="233" font-family="'DM Sans', sans-serif" font-size="12" font-weight="600" fill="#E4B84A" text-anchor="middle">Popularity-based Priors</text>
+          <text x="210" y="250" font-family="'DM Sans', sans-serif" font-size="11" fill="rgba(255,255,255,0.65)" text-anchor="middle">Age/gender/language priors applied</text>
+
+          <!-- Arrows from new user down to decision -->
+          <line x1="400" y1="70" x2="400" y2="86" stroke="#C8972A" stroke-width="1.5" marker-end="url(#arr2)" fill="none"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROI -->
+<section id="roi">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">Business Impact &amp; ROI</div>
+      <h2>Translating Model Performance into Revenue</h2>
+      <p>How a statistical improvement in NDCG@5 maps to measurable business outcomes. Every 1-point improvement in our primary metric corresponds to a predictable business lift.</p>
+    </div>
+
+    <div class="roi-grid" style="margin-bottom: 32px;">
+      <div class="card card-accent">
+        <h3>The Conversion Impact Model</h3>
+        <p style="font-size: 14px; color: #555; margin-bottom: 16px;">When the homepage shows personalized destination content instead of generic results, users spend more time browsing relevant listings, have higher intent-to-book, and convert at a measurably higher rate. Industry data from Booking.com's personalization team and Airbnb's growth reports both show 1.5–2.5× improvement in conversion for personalized vs. generic first sessions.</p>
+        <table class="data-table">
+          <thead><tr><th>Scenario</th><th>Conversion Rate</th><th>Monthly Bookings</th><th>Monthly Revenue</th></tr></thead>
+          <tbody>
+            <tr><td>Baseline (no personalization)</td><td>3.5%</td><td>17,500</td><td>$21M</td></tr>
+            <tr style="background: #F0FFF4;"><td>With ML Prediction (conservative)</td><td>4.5%</td><td>22,500</td><td>$27M</td></tr>
+            <tr style="background: #E6FFFA;"><td>With ML Prediction (target)</td><td>5.5%</td><td>27,500</td><td>$33M</td></tr>
+            <tr style="background: #FEF3C7;"><td>Best-in-class benchmark</td><td>7%+</td><td>35,000+</td><td>$42M+</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card card-accent">
+        <h3>Cost-Benefit Analysis (Year 1)</h3>
+        <table class="data-table">
+          <thead><tr><th>Item</th><th>Cost / Benefit</th></tr></thead>
+          <tbody>
+            <tr><td>ML Engineering Team (2 sprints, 5 engineers)</td><td style="color: #C53030;">- $85,000</td></tr>
+            <tr><td>Cloud infrastructure (training + serving)</td><td style="color: #C53030;">- $12,000</td></tr>
+            <tr><td>Data pipeline development</td><td style="color: #C53030;">- $20,000</td></tr>
+            <tr><td>Monitoring + MLflow setup</td><td style="color: #C53030;">- $8,000</td></tr>
+            <tr><td>Ongoing maintenance (annual)</td><td style="color: #C53030;">- $40,000</td></tr>
+            <tr><td style="border-top: 2px solid var(--border); font-weight: 700;">Total Year 1 Cost</td><td style="color: #C53030; font-weight: 700; border-top: 2px solid var(--border);">- $165,000</td></tr>
+            <tr><td>Revenue uplift (conservative, 12 months)</td><td style="color: #276749;">+ $72,000,000</td></tr>
+            <tr style="background: #F0FFF4;"><td style="font-weight: 700; color: #1A6B45;">Net Revenue Impact (Year 1)</td><td style="font-weight: 700; color: #1A6B45; font-size: 16px;">+ $71.8M</td></tr>
+            <tr style="background: #F0FFF4;"><td style="font-weight: 700; color: #1A6B45;">ROI</td><td style="font-weight: 700; color: #1A6B45; font-size: 16px;">43,500%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-bottom: 16px;">Secondary Business Benefits</h3>
+      <div class="card-grid-3" style="margin-top: 0;">
+        <div>
+          <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold); font-weight: 600; margin-bottom: 10px;">Marketing Efficiency</div>
+          <ul class="check-list">
+            <li>Email CTR +15–25% from destination-targeted campaigns</li>
+            <li>Ad retargeting CPL reduction ~20% (better audience segments)</li>
+            <li>NDF users identified early → retention spend prioritized</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold); font-weight: 600; margin-bottom: 10px;">Product Intelligence</div>
+          <ul class="check-list">
+            <li>SHAP features reveal which UI elements drive booking intent</li>
+            <li>Device-type features inform mobile UX investment priorities</li>
+            <li>Session duration patterns guide content depth decisions</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold); font-weight: 600; margin-bottom: 10px;">Platform Capability</div>
+          <ul class="check-list">
+            <li>Cold-start prediction reusable for push notification targeting</li>
+            <li>Feature pipeline feeds future LTV and churn prediction models</li>
+            <li>MLflow foundation enables faster iteration on future models</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section id="timeline" style="background: var(--white);">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">Project Roadmap</div>
+      <h2>Sprint Plan &amp; Deliverables</h2>
+      <p>Two-sprint agile engagement structure. Sprint 1 focuses on discovery and baseline; Sprint 2 on engineering maturity and production readiness.</p>
+    </div>
+
+    <div class="card-grid-2">
+      <div>
+        <div style="background: var(--navy); color: var(--white); padding: 12px 20px; border-radius: 8px 8px 0 0; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;">SPRINT 1 · Days 1–5 · Discovery &amp; Foundation</div>
+        <div class="card" style="border-radius: 0 0 8px 8px; border-top: none;">
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-dot"><span></span></div>
+              <div class="timeline-sprint">Day 1–2</div>
+              <h4>Data Ingestion &amp; EDA</h4>
+              <p>Profile all four tables. Document data quality issues. Produce class distribution charts. Identify zero-session user proportion. Commit initial findings notebook to GitHub.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"><span></span></div>
+              <div class="timeline-sprint">Day 2–3</div>
+              <h4>HLD + LLD Documents</h4>
+              <p>Architecture diagram (HLD). Feature catalogue with types and imputation strategy (LLD). Metric selection justification. Committed to /docs before any model training begins.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"><span></span></div>
+              <div class="timeline-sprint">Day 3–4</div>
+              <h4>Baseline Feature Pipeline</h4>
+              <p>Demographic features encoded. Basic session aggregates (count, total time). Train/test split with stratification. Baseline XGBoost trained and evaluated with NDCG@5.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"><span></span></div>
+              <div class="timeline-sprint">Day 5</div>
+              <h4>Sprint 1 Checkpoint Presentation</h4>
+              <p>Data insights, architecture diagram, baseline model results, blockers identified, Sprint 2 plan confirmed.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div style="background: var(--gold); color: var(--navy); padding: 12px 20px; border-radius: 8px 8px 0 0; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;">SPRINT 2 · Days 6–10 · Engineering &amp; Production</div>
+        <div class="card" style="border-radius: 0 0 8px 8px; border-top: none;">
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-dot"><span></span></div>
+              <div class="timeline-sprint">Day 6–7</div>
+              <h4>Advanced Feature Engineering</h4>
+              <p>TF-IDF on action sequences. Recency-weighted aggregates. Device proxy features. Action hierarchy weighting. Cold-start fallback model trained. Feature importance analysis with SHAP.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"><span></span></div>
+              <div class="timeline-sprint">Day 7–8</div>
+              <h4>Model Experimentation &amp; Comparison</h4>
+              <p>LightGBM vs XGBoost comparison. Class imbalance strategies (SMOTE vs class weights). Optuna hyperparameter search. Ensemble experiments. MLflow experiment tracking.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"><span></span></div>
+              <div class="timeline-sprint">Day 8–9</div>
+              <h4>Pipeline Modularization</h4>
+              <p>Refactor notebooks into modular Python pipeline. Feature store serialization. Inference pipeline with latency benchmarking. Unit tests for key transforms. Docker packaging.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot"><span></span></div>
+              <div class="timeline-sprint">Day 10</div>
+              <h4>Final Presentation &amp; Business Translation</h4>
+              <p>VP-level presentation: business context → data insights → technical approach → results → business recommendation → retrospective. All team members present.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-accent" style="margin-top: 32px;">
+      <h3 style="margin-bottom: 16px;">Repository Engineering Standards</h3>
+      <div class="card-grid-3" style="margin-top: 0;">
+        <div>
+          <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold); font-weight: 600; margin-bottom: 10px;">Git Hygiene</div>
+          <ul class="check-list">
+            <li>Semantic commit messages (feat: / fix: / docs: / refactor:)</li>
+            <li>Feature branches with PR review before merge</li>
+            <li>No single-day mega-commits; daily commits required</li>
+            <li>Distributed commit history across all team members</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold); font-weight: 600; margin-bottom: 10px;">Repository Structure</div>
+          <ul class="check-list">
+            <li>/data (raw, processed — gitignored for raw)</li>
+            <li>/src (feature pipeline, model training, inference)</li>
+            <li>/notebooks (EDA, experiments, storytelling)</li>
+            <li>/docs (HLD, LLD, PROMPTS.md, README.md)</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold); font-weight: 600; margin-bottom: 10px;">AI Usage Protocol</div>
+          <ul class="check-list">
+            <li>PROMPTS.md documents every significant AI interaction</li>
+            <li>Log: tool used, prompt, validation approach</li>
+            <li>No raw dataset uploaded to third-party AI APIs</li>
+            <li>All code walkthrough-ready by any team member</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>Project 4 · The Digital Footprint · User Journey Intelligence</strong></p>
+  <p style="margin-top: 8px;">Futurense AI Clinic · April 2026 · Travel / Hospitality / PropTech · MVP / Proof of Concept</p>
+  <p style="margin-top: 8px; font-size: 11px;">Confidential — for internal project use only. Data sourced from Airbnb Kaggle New User Bookings Competition.</p>
+</footer>
+
+</body>
+</html>
