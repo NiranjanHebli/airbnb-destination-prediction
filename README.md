@@ -52,6 +52,9 @@ The objective is to build a machine learning system that predicts a user's likel
 - Enable targeted destination-based marketing
 - Reduce generic recommendation exposure
 
+The business insights we discovered during research are noted in the Report whose link is attached below:- 
+
+###  [Business Report ](./docs/The Digital%20Footprint%20User%20Journey.pdf)
 ---
 
 # Problem Statement
